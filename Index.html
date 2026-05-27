@@ -175,12 +175,14 @@
             color: #4a5568;
         }
 
-        /* Tables Minimalist Styling */
+        /* FIXED: Tables Auto Layout (No more narrow columns) */
         .table {
             margin-bottom: 0;
             width: 100%;
-            table-layout: fixed;
-            word-wrap: break-word;
+            table-layout: auto !important;
+            /* Changed from fixed to auto to expand rows smoothly */
+            white-space: nowrap;
+            /* Prevents text from bundling up ugly into tiny rows */
         }
 
         .table thead tr {
@@ -361,19 +363,20 @@
                         <div class="col-12">
                             <div class="card shadow-sm">
                                 <div class="card-header bg-white text-dark fw-bold">
-                                    <i class="bi bi-clock-history text-primary me-2"></i>Recent Bookings Ledger Log
+                                    <i class="bi bi-clock-history text-primary me-2"></i>Recent Bookings Overview Log
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th style="width: 90px;">ID</th>
+                                                <th>ID</th>
                                                 <th>Guest Name</th>
                                                 <th>Room</th>
                                                 <th>Check-In</th>
                                                 <th>Check-Out</th>
                                                 <th>Total Price</th>
                                                 <th>Status</th>
+                                                <th>Quick Operation</th>
                                             </tr>
                                         </thead>
                                         <tbody id="tblDashboardRecentBookings"></tbody>
@@ -419,17 +422,28 @@
                             </div>
                         </div>
                     </form>
+
+                    <div class="search-wrapper mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0"><i
+                                    class="bi bi-search text-muted"></i></span>
+                            <input type="text" class="form-control border-start-0 ps-0" id="searchRoomType"
+                                placeholder="Search Category Name...">
+                        </div>
+                    </div>
+
                     <div class="card">
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th style="width: 100px;">Actions</th>
-                                        <th style="width: 50px;">No.</th>
-                                        <th style="width: 140px;">Category</th>
-                                        <th style="width: 140px;">Price (MMK)</th>
-                                        <th style="width: 120px;">Max Guests</th>
+                                        <th>Actions</th>
+                                        <th>No.</th>
+                                        <th>Category</th>
+                                        <th>Price (Per Night)</th>
+                                        <th>Max Guests</th>
                                         <th>Features</th>
+                                        <th>Created Time</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tblRoomTypes"></tbody>
@@ -485,8 +499,8 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th style="width: 110px;">Actions</th>
-                                        <th style="width: 60px;">No.</th>
+                                        <th>Actions</th>
+                                        <th>No.</th>
                                         <th>Room Number</th>
                                         <th>Category</th>
                                         <th>Price (Per Night)</th>
@@ -545,8 +559,8 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th style="width: 120px;">Actions</th>
-                                        <th style="width: 60px;">No.</th>
+                                        <th>Actions</th>
+                                        <th>No.</th>
                                         <th>Guest Name</th>
                                         <th>NRC / ID</th>
                                         <th>Contact Info</th>
@@ -608,14 +622,14 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th style="width: 80px;">Actions</th>
-                                        <th style="width: 90px;">ID</th>
-                                        <th style="width: 140px;">Guest Name</th>
-                                        <th style="width: 100px;">Room</th>
-                                        <th style="width: 110px;">Check-In</th>
-                                        <th style="width: 110px;">Check-Out</th>
-                                        <th style="width: 130px;">Total Price</th>
-                                        <th style="width: 140px;">Status</th>
+                                        <th>Actions</th>
+                                        <th>ID</th>
+                                        <th>Guest Name</th>
+                                        <th>Room</th>
+                                        <th>Check-In</th>
+                                        <th>Check-Out</th>
+                                        <th>Total Price</th>
+                                        <th>Status</th>
                                         <th>Created Time</th>
                                     </tr>
                                 </thead>
@@ -673,11 +687,11 @@
                                     <table class="table table-sm-text">
                                         <thead>
                                             <tr>
-                                                <th style="width: 105px;">Trx ID</th>
-                                                <th style="width: 90px;">Booking ID</th>
-                                                <th style="width: 120px;">Amount</th>
-                                                <th style="width: 95px;">Method</th>
-                                                <th style="width: 100px;">Slip Ref</th>
+                                                <th>Trx ID</th>
+                                                <th>Booking ID</th>
+                                                <th>Amount</th>
+                                                <th>Method</th>
+                                                <th>Slip Ref</th>
                                                 <th>Created Time</th>
                                             </tr>
                                         </thead>
@@ -697,9 +711,9 @@
                                         <thead>
                                             <tr>
                                                 <th>Booking ID & Guest</th>
-                                                <th style="width: 140px;">Room Number</th>
+                                                <th>Room Number</th>
                                                 <th>Current Status</th>
-                                                <th style="width: 220px;">Verify Action Process</th>
+                                                <th>Verify Action Process</th>
                                             </tr>
                                         </thead>
                                         <tbody id="tblOperations"></tbody>
@@ -714,7 +728,7 @@
         </div>
     </div>
 
-    <script src="js/jquery-4.0.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
@@ -723,6 +737,7 @@
         let editingGuestId = null;
 
         $(document).ready(function () {
+            // Navbar Panel Switching
             $('#dashboardNavbar .nav-link').click(function (e) {
                 e.preventDefault();
                 $('#dashboardNavbar .nav-link').removeClass('active');
@@ -735,16 +750,20 @@
                 refreshDropdowns();
             });
 
+            // Auto bill listeners
             $('#txtBkCheckIn, #txtBkCheckOut, #ddlBkRoom').change(function () { calculateBookingPrice(); });
             $('#ddlPayBooking').change(function () {
                 let amount = $(this).find(':selected').data('amount') || 0;
                 $('#txtPayAmount').val(amount);
             });
 
+            // Core Search filters binding
+            $('#searchRoomType').keyup(function () { loadRoomTypes(); });
             $('#searchRoom').keyup(function () { loadRooms(); });
             $('#searchGuest').keyup(function () { loadGuests(); });
             $('#searchBooking').keyup(function () { loadBookings(); });
 
+            // Form Submit Trigger Handlers
             $('#formRoomType').submit(function () { saveRTData(); });
             $('#formRooms').submit(function () { saveRoomData(); });
             $('#formGuests').submit(function () { saveGuestData(); });
@@ -787,6 +806,7 @@
             $('#dashCheckoutCount').text(checkoutCount);
             $('#dashCancelledCount').text(cancelledCount);
 
+            // Matrix Table Rendering
             $('#tblDashboardMatrix').html('');
             if (rTypes.length === 0) {
                 $('#tblDashboardMatrix').append(`<tr><td colspan="5" class="text-center py-3 text-muted">No room types configured.</td></tr>`);
@@ -804,9 +824,10 @@
                 });
             }
 
+            // Dashboard Recent Bookings Ledger Table
             $('#tblDashboardRecentBookings').html('');
             if (bookings.length === 0) {
-                $('#tblDashboardRecentBookings').append(`<tr><td colspan="7" class="text-center text-muted py-4">No recent records found inside bookings archive list data ledger.</td></tr>`);
+                $('#tblDashboardRecentBookings').append(`<tr><td colspan="8" class="text-center text-muted py-4">No recent records found.</td></tr>`);
                 return;
             }
 
@@ -817,6 +838,9 @@
                 if (b.status === 'Cancelled') badgeClass = 'badge-cancelled';
                 if (b.status === 'Checked-Out') badgeClass = 'badge-checkout';
 
+                let checkoutBtnHtml = (b.status === 'Pending Payment' || b.status === 'Confirmed') ?
+                    `<button class="btn btn-sm btn-info text-white py-1 px-2" onclick="checkoutBooking('${b.id}','${b.room}')"><i class="bi bi-box-arrow-right me-1"></i>Checkout</button>` : '-';
+
                 $('#tblDashboardRecentBookings').append(`<tr>
                     <td><b>${b.id}</b></td>
                     <td>${b.guest}</td>
@@ -825,6 +849,7 @@
                     <td>${b.checkOut}</td>
                     <td><b class="text-dark">${Number(b.totalPrice).toLocaleString()} K</b></td>
                     <td><span class="badge ${badgeClass}">${b.status}</span></td>
+                    <td>${checkoutBtnHtml}</td>
                 </tr>`);
             });
         }
@@ -881,6 +906,7 @@
             }
         }
 
+        /* 1. ROOM TYPES CODE */
         function saveRTData() {
             let name = $('#txtRTName').val().trim();
             let price = $('#txtRTPrice').val().trim();
@@ -888,8 +914,10 @@
             let features = $('#txtRTFeatures').val().trim();
 
             let list = JSON.parse(localStorage.getItem('h_room_types')) || [];
+            let createdTime = getFormattedDateTime(); // 🆕 Get Auto created time stamp
+
             if (editingRTId == null) {
-                list.push({ id: crypto.randomUUID(), name, price, maxGuest, features });
+                list.push({ id: crypto.randomUUID(), name, price, maxGuest, features, createdTime });
             } else {
                 let i = list.findIndex(x => x.id === editingRTId);
                 if (i !== -1) { list[i].name = name; list[i].price = price; list[i].maxGuest = maxGuest; list[i].features = features; }
@@ -900,17 +928,32 @@
 
         function loadRoomTypes() {
             let list = JSON.parse(localStorage.getItem('h_room_types')) || [];
+            let keyword = $('#searchRoomType').val().toLowerCase();
+
+            if (keyword) { list = list.filter(r => r.name.toLowerCase().includes(keyword)); }
+
             $('#tblRoomTypes').html('');
+
+            if (list.length === 0) {
+                $('#tblRoomTypes').append(`<tr><td colspan="7" class="text-center text-muted py-3">No categories matched your database logs.</td></tr>`);
+                return;
+            }
+
             list.forEach((item, index) => {
+                // 🆕 Added item.createdTime parameter seamlessly into table row mapping injection
                 $('#tblRoomTypes').append(`<tr>
                     <td>
                         <div class="d-flex align-items-center gap-2">
-                            <button class="btn btn-action btn-outline-primary" onclick="editRT('${item.id}')" title="Edit"><i class="bi bi-pencil-square"></i></button>
-                            <button class="btn btn-action btn-outline-danger" onclick="deleteRT('${item.id}')" title="Delete"><i class="bi bi-trash-fill"></i></button>
+                            <button class="btn btn-action btn-outline-primary" onclick="editRT('${item.id}')" title="Edit Category"><i class="bi bi-pencil-square"></i></button>
+                            <button class="btn btn-action btn-outline-danger" onclick="deleteRT('${item.id}')" title="Delete Category"><i class="bi bi-trash-fill"></i></button>
                         </div>
                     </td>
-                    <td>${index + 1}</td><td><b>${item.name}</b></td><td><b>${Number(item.price).toLocaleString()} ကျပ်</b></td>
-                    <td><span class="badge bg-secondary-subtle text-dark">${item.maxGuest} Guests</span></td><td>${item.features}</td>
+                    <td>${index + 1}</td>
+                    <td><b>${item.name}</b></td>
+                    <td><b class="text-primary">${Number(item.price).toLocaleString()} Ks</b></td>
+                    <td><span class="badge bg-secondary-subtle text-dark">${item.maxGuest} Guests</span></td>
+                    <td><small class="text-secondary">${item.features}</small></td>
+                    <td><small class="text-muted font-monospace">${item.createdTime || '-'}</small></td>
                 </tr>`);
             });
         }
@@ -920,11 +963,13 @@
             if (item) {
                 $('#txtRTName').val(item.name); $('#txtRTPrice').val(item.price); $('#txtRTMaxGuest').val(item.maxGuest); $('#txtRTFeatures').val(item.features);
                 editingRTId = id; $('#rtFormTitle').text("Update Room Type Category"); $('#btnSaveRT').text("Update Category");
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
         function deleteRT(id) { if (confirm("Delete Category?")) { let list = JSON.parse(localStorage.getItem('h_room_types')) || []; list = list.filter(x => x.id !== id); localStorage.setItem('h_room_types', JSON.stringify(list)); loadRoomTypes(); loadRooms(); refreshDropdowns(); calculateDashboardMetrics(); } }
         function clearRTForm() { $('#txtRTName').val(''); $('#txtRTPrice').val(''); $('#txtRTMaxGuest').val(''); $('#txtRTFeatures').val(''); editingRTId = null; $('#rtFormTitle').text("Add New Room Type Category"); $('#btnSaveRT').text("Save Room Type"); }
 
+        /* 2. ROOMS CODE */
         function saveRoomData() {
             let roomNo = $('#txtRoomNo').val().trim();
             let type = $('#ddlRoomType').val();
@@ -977,6 +1022,7 @@
         function deleteRoom(id) { if (confirm("Delete Room?")) { let list = JSON.parse(localStorage.getItem('h_rooms')) || []; list = list.filter(x => x.id !== id); localStorage.setItem('h_rooms', JSON.stringify(list)); loadRooms(); refreshDropdowns(); calculateDashboardMetrics(); } }
         function clearRoomForm() { $('#txtRoomNo').val(''); editingRoomId = null; $('#rmFormTitle').text("Add Specific Room Number"); $('#btnSaveRoom').text("Add Room"); }
 
+        /* 3. GUESTS CODE */
         function saveGuestData() {
             let name = $('#txtGstName').val().trim();
             let nrc = $('#txtGstNrc').val().trim();
@@ -1037,6 +1083,7 @@
         }
         function clearGuestForm() { $('#txtGstName').val(''); $('#txtGstNrc').val(''); $('#txtGstContact').val(''); editingGuestId = null; $('#gstFormTitle').text("Register Guest Profile"); $('#btnSaveGuest').text("Register Profile"); }
 
+        /* 4. BOOKINGS CODE */
         function saveBookingData() {
             let guest = $('#ddlBkGuest').val();
             let room = $('#ddlBkRoom').val();
@@ -1086,8 +1133,16 @@
                 </tr>`);
 
                 let opsActionHtml = '-';
-                if (item.status === 'Pending Payment' || item.status === 'Confirmed') {
-                    opsActionHtml = `<button class="btn btn-sm btn-info text-white px-3" onclick="checkoutBooking('${item.id}','${item.room}')"><i class="bi bi-box-arrow-right me-1"></i>Checkout</button>`;
+                if (item.status === 'Pending Payment' && item.trxRef !== '') {
+                    opsActionHtml = `
+                        <button class="btn btn-sm btn-warning px-2 me-1" onclick="verifyPayment('${item.id}')"><i class="bi bi-shield-check me-1"></i>Confirm</button>
+                        <button class="btn btn-sm btn-info text-white px-2" onclick="checkoutBooking('${item.id}','${item.room}')">Checkout</button>
+                    `;
+                } else if (item.status === 'Confirmed' || item.status === 'Pending Payment') {
+                    opsActionHtml = `
+                        ${item.status === 'Pending Payment' ? `<button class="btn btn-sm btn-warning px-2 me-1" onclick="verifyPayment('${item.id}')">Confirm</button>` : ''}
+                        <button class="btn btn-sm btn-info text-white px-3" onclick="checkoutBooking('${item.id}','${item.room}')">Checkout</button>
+                    `;
                 }
 
                 $('#tblOperations').append(`<tr>
@@ -1110,6 +1165,7 @@
             }
         }
 
+        /* 5. PAYMENTS CODE */
         function savePaymentData() {
             let bookingId = $('#ddlPayBooking').val();
             let totalAmount = $('#txtPayAmount').val();
@@ -1153,6 +1209,14 @@
                     <td><small class="text-muted font-monospace" style="font-size:11px;">${p.createdTime ? p.createdTime.substring(5, 16) : '-'}</small></td>
                 </tr>`);
             });
+        }
+
+        function verifyPayment(id) {
+            let list = JSON.parse(localStorage.getItem('h_bookings')) || [];
+            let i = list.findIndex(x => x.id === id);
+            if (i !== -1) list[i].status = 'Confirmed';
+            localStorage.setItem('h_bookings', JSON.stringify(list));
+            loadBookings(); calculateDashboardMetrics();
         }
 
         function checkoutBooking(id, roomNo) {
