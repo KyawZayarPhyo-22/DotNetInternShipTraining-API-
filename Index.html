@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Admin Dashboard - Hotel Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --material-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --material-shadow-md: 0 10px 25px rgba(0, 0, 0, 0.04);
+            --material-shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.1);
+            --border-radius-pill: 50px;
+            --border-radius-md: 14px;
+            --border-radius-lg: 20px;
+            --dark-blue-theme: #0B192C;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f4f7f6;
+            color: #2d3748;
+        }
+
+        /* Fixed Sidebar Layout */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 16.666667%;
+            height: 100vh;
+            background: var(--dark-blue-theme);
+            padding: 28px 16px;
+            box-shadow: var(--material-shadow-sm);
+            z-index: 1030;
+            overflow-y: auto;
+        }
+
+        .sidebar h4 {
+            color: #ffffff;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .sidebar .nav-link {
+            color: #94a3b8;
+            font-weight: 500;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: var(--border-radius-md);
+            transition: all 0.25s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.04);
+            transform: translateX(3px);
+        }
+
+        .sidebar .nav-link.active {
+            color: #ffffff;
+            background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+            box-shadow: 0 6px 16px rgba(29, 78, 216, 0.3);
+        }
+
+        .main-content {
+            margin-left: 16.666667%;
+            padding: 36px;
+            width: 83.333333%;
+        }
+
+        /* Dashboard KPI Cards */
+        .stat-card {
+            border: none;
+            border-radius: var(--border-radius-md);
+            padding: 22px;
+            background: #ffffff;
+            box-shadow: var(--material-shadow-sm);
+            transition: transform 0.2s ease;
+            height: 105px;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .icon-shape {
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 1.25rem;
+        }
+
+        .card {
+            background: #ffffff;
+            border: none;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--material-shadow-md);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: #ffffff;
+            border-bottom: 1px solid #f0f4f8;
+            padding: 20px 24px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #1a202c;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .form-control,
+        .form-select {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 10px 16px;
+            border-radius: var(--border-radius-md);
+            font-size: 0.95rem;
+            color: #2d3748;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            background-color: #ffffff;
+            border-color: #3182ce;
+            box-shadow: 0 0 0 4px rgba(49, 130, 206, 0.1);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-weight: 600;
+            border-radius: var(--border-radius-md);
+            transition: all 0.2s ease;
+        }
+
+        .btn-action {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3182ce 0%, #2b6cb0 100%);
+            border: none;
+        }
+
+        .btn-light {
+            background-color: #edf2f7;
+            border: none;
+            color: #4a5568;
+        }
+
+        /* Tables Minimalist Styling */
+        .table {
+            margin-bottom: 0;
+            width: 100%;
+            table-layout: fixed;
+            word-wrap: break-word;
+        }
+
+        .table thead tr {
+            background-color: var(--dark-blue-theme) !important;
+        }
+
+        .table th {
+            background-color: var(--dark-blue-theme) !important;
+            color: #ffffff !important;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            padding: 14px 18px;
+        }
+
+        .table td {
+            padding: 14px 18px;
+            vertical-align: middle;
+            border-bottom: 1px solid #edf2f7;
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+
+        .table-sm-text td {
+            font-size: 0.85rem;
+            padding: 12px 14px;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            font-weight: 600;
+            border-radius: var(--border-radius-pill) !important;
+        }
+
+        /* Vibrant Badges */
+        .badge-confirmed {
+            background-color: #22c55e !important;
+            color: #ffffff !important;
+            box-shadow: 0 2px 6px rgba(34, 197, 94, 0.2);
+        }
+
+        .badge-cancelled {
+            background-color: #ef4444 !important;
+            color: #ffffff !important;
+            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.2);
+        }
+
+        .badge-pending {
+            background-color: #f59e0b !important;
+            color: #ffffff !important;
+            box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);
+        }
+
+        .badge-checkout {
+            background-color: #3b82f6 !important;
+            color: #ffffff !important;
+            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.2);
+        }
+
+        .search-wrapper {
+            max-width: 360px;
+        }
+
+        .tab-content-panel {
+            display: none;
+        }
+
+        .tab-content-panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-fluid p-0">
+        <div class="d-flex">
+            <div class="sidebar">
+                <h4 class="text-center mb-5 py-2"><i class="bi bi-building-fill-check text-info me-2"></i>Hotel HMS</h4>
+                <ul class="nav flex-column" id="dashboardNavbar">
+                    <li class="nav-item"><a class="nav-link active" href="#" data-target="panel-dashboard"><i
+                                class="bi bi-grid-1x2-fill me-2"></i> Admin Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-target="panel-room-types"><i
+                                class="bi bi-tags-fill me-2"></i> Room Types</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-target="panel-rooms"><i
+                                class="bi bi-door-open-fill me-2"></i> Rooms Setup</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-target="panel-guests"><i
+                                class="bi bi-person-vcard-fill me-2"></i> Guests Profiles</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-target="panel-bookings"><i
+                                class="bi bi-calendar-check-fill me-2"></i> Bookings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-target="panel-payments"><i
+                                class="bi bi-credit-card-fill me-2"></i> Payments & Ops</a></li>
+                </ul>
+            </div>
+
+            <div class="main-content">
+
+                <div id="panel-dashboard" class="tab-content-panel active">
+                    <h2 class="fw-bold text-dark mb-4">Hotel Admin Dashboard</h2>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-4">
+                            <div class="stat-card d-flex align-items-center justify-content-between shadow-sm">
+                                <div>
+                                    <p class="text-muted small uppercase fw-bold mb-1">Total Revenue</p>
+                                    <h3 class="fw-bold m-0 text-success" id="dashRevenue">0 ကျပ်</h3>
+                                </div>
+                                <div class="icon-shape bg-success-subtle text-success"><i class="bi bi-cash-stack"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card d-flex align-items-center justify-content-between shadow-sm">
+                                <div>
+                                    <p class="text-muted small uppercase fw-bold mb-1">Available Rooms Status</p>
+                                    <h3 class="fw-bold m-0 text-primary" id="dashAvailRooms">0 / 0 Rms</h3>
+                                </div>
+                                <div class="icon-shape bg-primary-subtle text-primary"><i class="bi bi-door-open"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card d-flex align-items-center justify-content-between shadow-sm">
+                                <div>
+                                    <p class="text-muted small uppercase fw-bold mb-1">Checkout / Cancelled</p>
+                                    <h5 class="m-0 fw-bold" style="font-size: 15px; line-height: 1.4;">
+                                        <span class="text-info"><i class="bi bi-box-arrow-right"></i> <span
+                                                id="dashCheckoutCount">0</span> Out</span> |
+                                        <span class="text-danger"><i class="bi bi-x-circle"></i> <span
+                                                id="dashCancelledCount">0</span> Cancel</span>
+                                    </h5>
+                                </div>
+                                <div class="icon-shape bg-info-subtle text-info"><i class="bi bi-pie-chart-fill"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card shadow-sm mb-0">
+                                <div class="card-header bg-white"><i
+                                        class="bi bi-grid-3x3-gap-fill text-info me-2"></i>Room Categories Live
+                                    Operational Matrix</div>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Category Classification</th>
+                                                <th>Base Rate / Night</th>
+                                                <th>Max Capacity</th>
+                                                <th>Total Inventory Setup</th>
+                                                <th>Available Rms Now</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tblDashboardMatrix"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-white text-dark fw-bold">
+                                    <i class="bi bi-clock-history text-primary me-2"></i>Recent Bookings Ledger Log
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 90px;">ID</th>
+                                                <th>Guest Name</th>
+                                                <th>Room</th>
+                                                <th>Check-In</th>
+                                                <th>Check-Out</th>
+                                                <th>Total Price</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tblDashboardRecentBookings"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="panel-room-types" class="tab-content-panel">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="fw-bold m-0 text-dark">Room Types Category</h2>
+                    </div>
+                    <form id="formRoomType" onsubmit="return false;">
+                        <div class="card">
+                            <div class="card-header" id="rtFormTitle">Add New Room Type Category</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-medium">Category Name</label>
+                                        <input type="text" class="form-control" id="txtRTName"
+                                            placeholder="Deluxe, Standard" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-medium">Price per Night (MMK)</label>
+                                        <input type="number" class="form-control" id="txtRTPrice" placeholder="50000"
+                                            required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-medium">Max Guests Allowed</label>
+                                        <input type="number" class="form-control" id="txtRTMaxGuest" placeholder="2"
+                                            min="1" required>
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <label class="form-label fw-medium">Features</label>
+                                        <textarea class="form-control" id="txtRTFeatures" rows="2"
+                                            placeholder="King Bed, Free Wi-Fi" required></textarea>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-light me-2" onclick="clearRTForm()">Cancel</button>
+                                <button type="submit" class="btn btn-success">Save Room Type</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 100px;">Actions</th>
+                                        <th style="width: 50px;">No.</th>
+                                        <th style="width: 140px;">Category</th>
+                                        <th style="width: 140px;">Price (MMK)</th>
+                                        <th style="width: 120px;">Max Guests</th>
+                                        <th>Features</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblRoomTypes"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="panel-rooms" class="tab-content-panel">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="fw-bold m-0 text-dark">Rooms Inventory</h2>
+                    </div>
+                    <form id="formRooms" onsubmit="return false;">
+                        <div class="card">
+                            <div class="card-header" id="rmFormTitle">Add Specific Room Number</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-medium">Room Number</label>
+                                        <input type="text" class="form-control" id="txtRoomNo" placeholder="Room-101"
+                                            required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-medium">Room Type Category</label>
+                                        <select class="form-select" id="ddlRoomType" required></select>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-medium">Operational Status</label>
+                                        <select class="form-select" id="ddlRoomStatus" required>
+                                            <option value="Available">Available</option>
+                                            <option value="Maintenance">Maintenance</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-light me-2"
+                                    onclick="clearRoomForm()">Cancel</button>
+                                <button type="submit" class="btn btn-success">Add Room</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="search-wrapper mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0"><i
+                                    class="bi bi-search text-muted"></i></span>
+                            <input type="text" class="form-control border-start-0 ps-0" id="searchRoom"
+                                placeholder="Search Room Number or Category...">
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 110px;">Actions</th>
+                                        <th style="width: 60px;">No.</th>
+                                        <th>Room Number</th>
+                                        <th>Category</th>
+                                        <th>Price (Per Night)</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblRooms"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="panel-guests" class="tab-content-panel">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="fw-bold m-0 text-dark">Guest Profiles</h2>
+                    </div>
+                    <form id="formGuests" onsubmit="return false;">
+                        <div class="card">
+                            <div class="card-header" id="gstFormTitle">Register Guest Profile</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-medium">Full Name</label>
+                                        <input type="text" class="form-control" id="txtGstName" placeholder="John Doe"
+                                            required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-medium">NRC Number / Passport</label>
+                                        <input type="text" class="form-control" id="txtGstNrc"
+                                            placeholder="12/MAMANA(N)123456" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-medium">Phone / Email</label>
+                                        <input type="text" class="form-control" id="txtGstContact" placeholder="+959..."
+                                            required>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-light me-2"
+                                    onclick="clearGuestForm()">Cancel</button>
+                                <button type="submit" class="btn btn-success">Register Profile</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="search-wrapper mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0"><i
+                                    class="bi bi-search text-muted"></i></span>
+                            <input type="text" class="form-control border-start-0 ps-0" id="searchGuest"
+                                placeholder="Search Guest Name or NRC...">
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 120px;">Actions</th>
+                                        <th style="width: 60px;">No.</th>
+                                        <th>Guest Name</th>
+                                        <th>NRC / ID</th>
+                                        <th>Contact Info</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblGuests"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="panel-bookings" class="tab-content-panel">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="fw-bold m-0 text-dark">Reservations & Bookings</h2>
+                    </div>
+                    <form id="formBookings" onsubmit="return false;">
+                        <div class="card">
+                            <div class="card-header">Submit New Reservation</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-3 mb-3">
+                                        <label class="form-label fw-medium">Select Guest Profile</label>
+                                        <select class="form-select" id="ddlBkGuest" required></select>
+                                    </div>
+                                    <div class="col-md-6 col-lg-3 mb-3">
+                                        <label class="form-label fw-medium">Select Room</label>
+                                        <select class="form-select" id="ddlBkRoom" required></select>
+                                    </div>
+                                    <div class="col-md-6 col-lg-2 mb-3">
+                                        <label class="form-label fw-medium">Check-in Date</label>
+                                        <input type="date" class="form-control" id="txtBkCheckIn" required>
+                                    </div>
+                                    <div class="col-md-6 col-lg-2 mb-3">
+                                        <label class="form-label fw-medium">Check-out Date</label>
+                                        <input type="date" class="form-control" id="txtBkCheckOut" required>
+                                    </div>
+                                    <div class="col-md-12 col-lg-2 mb-3">
+                                        <label class="form-label fw-medium">Total Price (MMK)</label>
+                                        <input type="text" class="form-control bg-light fw-bold text-primary"
+                                            id="txtBkTotalPrice" placeholder="0" readonly required>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-success">Submit Reservation</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="search-wrapper mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0"><i
+                                    class="bi bi-search text-muted"></i></span>
+                            <input type="text" class="form-control border-start-0 ps-0" id="searchBooking"
+                                placeholder="Search Booking ID, Guest or Room...">
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 80px;">Actions</th>
+                                        <th style="width: 90px;">ID</th>
+                                        <th style="width: 140px;">Guest Name</th>
+                                        <th style="width: 100px;">Room</th>
+                                        <th style="width: 110px;">Check-In</th>
+                                        <th style="width: 110px;">Check-Out</th>
+                                        <th style="width: 130px;">Total Price</th>
+                                        <th style="width: 140px;">Status</th>
+                                        <th>Created Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblBookings"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="panel-payments" class="tab-content-panel">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="fw-bold m-0 text-dark">Payments & Operations Center</h2>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-4 mb-4">
+                            <form id="formPayments" onsubmit="return false;">
+                                <div class="card">
+                                    <div class="card-header">Upload Online Receipt</div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-medium">Select Booking ID</label>
+                                            <select class="form-select" id="ddlPayBooking" required></select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-medium">Total Amount (MMK)</label>
+                                            <input type="text" class="form-control bg-light fw-bold text-success"
+                                                id="txtPayAmount" placeholder="0" readonly required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-medium">Payment Method</label>
+                                            <select class="form-select" id="ddlPayMethod" required>
+                                                <option value="KBZPay">KBZPay</option>
+                                                <option value="WaveMoney">WaveMoney</option>
+                                                <option value="CBPay">CBPay</option>
+                                                <option value="Cash">Cash at Counter</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-medium">Transaction Screenshot / Slip
+                                                Ref</label>
+                                            <input type="text" class="form-control" id="txtPaySs"
+                                                placeholder="e.g. Slip No. or image.png" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">Submit Receipt</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="col-xl-8 mb-4">
+                            <div class="card">
+                                <div class="card-header">Payments Management Ledger (Database Log)</div>
+                                <div class="table-responsive">
+                                    <table class="table table-sm-text">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 105px;">Trx ID</th>
+                                                <th style="width: 90px;">Booking ID</th>
+                                                <th style="width: 120px;">Amount</th>
+                                                <th style="width: 95px;">Method</th>
+                                                <th style="width: 100px;">Slip Ref</th>
+                                                <th>Created Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tblPaymentsLog"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 mb-4">
+                            <div class="card">
+                                <div class="card-header">Admin Action Verification Center</div>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Booking ID & Guest</th>
+                                                <th style="width: 140px;">Room Number</th>
+                                                <th>Current Status</th>
+                                                <th style="width: 220px;">Verify Action Process</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tblOperations"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        let editingRTId = null;
+        let editingRoomId = null;
+        let editingGuestId = null;
+
+        $(document).ready(function () {
+            // Navbar Panel Switching
+            $('#dashboardNavbar .nav-link').click(function (e) {
+                e.preventDefault();
+                $('#dashboardNavbar .nav-link').removeClass('active');
+                $(this).addClass('active');
+
+                let targetPanel = $(this).data('target');
+                $('.tab-content-panel').removeClass('active');
+                $('#' + targetPanel).addClass('active');
+
+                refreshDropdowns();
+            });
+
+            // Auto bill listeners
+            $('#txtBkCheckIn, #txtBkCheckOut, #ddlBkRoom').change(function () { calculateBookingPrice(); });
+            $('#ddlPayBooking').change(function () {
+                let amount = $(this).find(':selected').data('amount') || 0;
+                $('#txtPayAmount').val(amount);
+            });
+
+            // Core Search filters
+            $('#searchRoom').keyup(function () { loadRooms(); });
+            $('#searchGuest').keyup(function () { loadGuests(); });
+            $('#searchBooking').keyup(function () { loadBookings(); });
+
+            // Form Submit Trigger Handlers
+            $('#formRoomType').submit(function () { saveRTData(); });
+            $('#formRooms').submit(function () { saveRoomData(); });
+            $('#formGuests').submit(function () { saveGuestData(); });
+            $('#formBookings').submit(function () { saveBookingData(); });
+            $('#formPayments').submit(function () { savePaymentData(); });
+
+            loadAllData();
+        });
+
+        function loadAllData() {
+            loadRoomTypes();
+            loadRooms();
+            loadGuests();
+            loadBookings();
+            loadPaymentsTable();
+            refreshDropdowns();
+            calculateDashboardMetrics();
+        }
+
+        function getFormattedDateTime() {
+            const now = new Date();
+            return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+        }
+
+        function calculateDashboardMetrics() {
+            let rooms = JSON.parse(localStorage.getItem('h_rooms')) || [];
+            let payments = JSON.parse(localStorage.getItem('h_payments_ledger')) || [];
+            let bookings = JSON.parse(localStorage.getItem('h_bookings')) || [];
+            let rTypes = JSON.parse(localStorage.getItem('h_room_types')) || [];
+
+            let totalRevenue = payments.reduce((sum, current) => sum + Number(current.totalAmount), 0);
+            $('#dashRevenue').text(totalRevenue.toLocaleString() + " ကျပ်");
+
+            let totalRoomsCount = rooms.length;
+            let availableRoomsCount = rooms.filter(r => r.status === 'Available').length;
+            $('#dashAvailRooms').text(`${availableRoomsCount} / ${totalRoomsCount} Rms`);
+
+            let checkoutCount = bookings.filter(b => b.status === 'Checked-Out').length;
+            let cancelledCount = bookings.filter(b => b.status === 'Cancelled').length;
+            $('#dashCheckoutCount').text(checkoutCount);
+            $('#dashCancelledCount').text(cancelledCount);
+
+            // Matrix Table Rendering
+            $('#tblDashboardMatrix').html('');
+            if (rTypes.length === 0) {
+                $('#tblDashboardMatrix').append(`<tr><td colspan="5" class="text-center py-3 text-muted">No room types configured.</td></tr>`);
+            } else {
+                rTypes.forEach(cat => {
+                    let totalInCat = rooms.filter(r => r.type === cat.name).length;
+                    let availInCat = rooms.filter(r => r.type === cat.name && r.status === 'Available').length;
+                    $('#tblDashboardMatrix').append(`<tr>
+                        <td><b>${cat.name}</b></td>
+                        <td><span class="text-secondary fw-bold">${Number(cat.price).toLocaleString()} ကျပ်</span></td>
+                        <td><span class="badge bg-light text-dark border">${cat.maxGuest} Pax</span></td>
+                        <td><b>${totalInCat} Rooms</b></td>
+                        <td><span class="badge ${availInCat > 0 ? 'bg-success' : 'bg-danger'}">${availInCat} Free</span></td>
+                    </tr>`);
+                });
+            }
+
+            // Load Recent Bookings 
+            $('#tblDashboardRecentBookings').html('');
+            if (bookings.length === 0) {
+                $('#tblDashboardRecentBookings').append(`<tr><td colspan="7" class="text-center text-muted py-4">No recent records found inside bookings archive list data ledger.</td></tr>`);
+                return;
+            }
+
+            let recentItems = bookings.slice(-5).reverse();
+            recentItems.forEach(b => {
+                let badgeClass = 'badge-pending';
+                if (b.status === 'Confirmed') badgeClass = 'badge-confirmed';
+                if (b.status === 'Cancelled') badgeClass = 'badge-cancelled';
+                if (b.status === 'Checked-Out') badgeClass = 'badge-checkout';
+
+                $('#tblDashboardRecentBookings').append(`<tr>
+                    <td><b>${b.id}</b></td>
+                    <td>${b.guest}</td>
+                    <td><span class="badge bg-light text-dark border">${b.room}</span></td>
+                    <td>${b.checkIn}</td>
+                    <td>${b.checkOut}</td>
+                    <td><b class="text-dark">${Number(b.totalPrice).toLocaleString()} K</b></td>
+                    <td><span class="badge ${badgeClass}">${b.status}</span></td>
+                </tr>`);
+            });
+        }
+
+        function refreshDropdowns() {
+            let rTypes = JSON.parse(localStorage.getItem('h_room_types')) || [];
+            let rooms = JSON.parse(localStorage.getItem('h_rooms')) || [];
+            let guests = JSON.parse(localStorage.getItem('h_guests')) || [];
+            let activeGuests = guests.filter(g => !g.isDeleted);
+            let bookings = JSON.parse(localStorage.getItem('h_bookings')) || [];
+
+            $('#ddlRoomType').html('<option value="">-- Choose Category --</option>');
+            rTypes.forEach(r => $('#ddlRoomType').append(`<option value="${r.name}" data-price="${r.price}">${r.name} (${Number(r.price).toLocaleString()} ကျပ်)</option>`));
+
+            $('#ddlBkGuest').html('<option value="">-- Choose Guest Profile --</option>');
+            activeGuests.forEach(g => $('#ddlBkGuest').append(`<option value="${g.name}">${g.name} (${g.nrc})</option>`));
+
+            $('#ddlBkRoom').html('<option value="">-- Choose Room Number --</option>');
+            let availRooms = rooms.filter(r => r.status === 'Available');
+            availRooms.forEach(r => {
+                let matchingCat = rTypes.find(t => t.name === r.type);
+                let roomPrice = matchingCat ? matchingCat.price : 0;
+                $('#ddlBkRoom').append(`<option value="${r.roomNo}" data-price="${roomPrice}">${r.roomNo} (${r.type} - ${Number(roomPrice).toLocaleString()} ကျပ်)</option>`);
+            });
+
+            $('#ddlPayBooking').html('<option value="">-- Choose Booking ID --</option>');
+            let pendingPayBks = bookings.filter(b => b.status === 'Pending Payment' && b.trxRef === '');
+            pendingPayBks.forEach(b => {
+                let optionText = b.id + " - " + b.guest;
+                $('#ddlPayBooking').append($('<option></option>').val(b.id).attr('data-amount', b.totalPrice).text(optionText));
+            });
+            $('#txtPayAmount').val(0);
+        }
+
+        function calculateBookingPrice() {
+            let checkInVal = $('#txtBkCheckIn').val();
+            let checkOutVal = $('#txtBkCheckOut').val();
+            let selectedRoomPrice = $('#ddlBkRoom').find(':selected').data('price') || 0;
+
+            if (checkInVal && checkOutVal) {
+                let d1 = new Date(checkInVal);
+                let d2 = new Date(checkOutVal);
+                let timeDiff = d2.getTime() - d1.getTime();
+                let daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+                if (daysDiff > 0) {
+                    let totalPrice = daysDiff * selectedRoomPrice;
+                    $('#txtBkTotalPrice').val(totalPrice);
+                } else {
+                    $('#txtBkTotalPrice').val(0);
+                }
+            } else {
+                $('#txtBkTotalPrice').val(0);
+            }
+        }
+
+        /* 1. ROOM TYPES CODE */
+        function saveRTData() {
+            let name = $('#txtRTName').val().trim();
+            let price = $('#txtRTPrice').val().trim();
+            let maxGuest = $('#txtRTMaxGuest').val().trim();
+            let features = $('#txtRTFeatures').val().trim();
+
+            let list = JSON.parse(localStorage.getItem('h_room_types')) || [];
+            if (editingRTId == null) {
+                list.push({ id: crypto.randomUUID(), name, price, maxGuest, features });
+            } else {
+                let i = list.findIndex(x => x.id === editingRTId);
+                if (i !== -1) { list[i].name = name; list[i].price = price; list[i].maxGuest = maxGuest; list[i].features = features; }
+            }
+            localStorage.setItem('h_room_types', JSON.stringify(list));
+            clearRTForm(); loadRoomTypes(); loadRooms(); refreshDropdowns(); calculateDashboardMetrics();
+        }
+
+        function loadRoomTypes() {
+            let list = JSON.parse(localStorage.getItem('h_room_types')) || [];
+            $('#tblRoomTypes').html('');
+            list.forEach((item, index) => {
+                $('#tblRoomTypes').append(`<tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="btn btn-action btn-outline-primary" onclick="editRT('${item.id}')" title="Edit"><i class="bi bi-pencil-square"></i></button>
+                            <button class="btn btn-action btn-outline-danger" onclick="deleteRT('${item.id}')" title="Delete"><i class="bi bi-trash-fill"></i></button>
+                        </div>
+                    </td>
+                    <td>${index + 1}</td><td><b>${item.name}</b></td><td><b>${Number(item.price).toLocaleString()} ကျပ်</b></td>
+                    <td><span class="badge bg-secondary-subtle text-dark">${item.maxGuest} Guests</span></td><td>${item.features}</td>
+                </tr>`);
+            });
+        }
+        function editRT(id) {
+            let list = JSON.parse(localStorage.getItem('h_room_types')) || [];
+            let item = list.find(x => x.id === id);
+            if (item) {
+                $('#txtRTName').val(item.name); $('#txtRTPrice').val(item.price); $('#txtRTMaxGuest').val(item.maxGuest); $('#txtRTFeatures').val(item.features);
+                editingRTId = id; $('#rtFormTitle').text("Update Room Type Category"); $('#btnSaveRT').text("Update Category");
+            }
+        }
+        function deleteRT(id) { if (confirm("Delete Category?")) { let list = JSON.parse(localStorage.getItem('h_room_types')) || []; list = list.filter(x => x.id !== id); localStorage.setItem('h_room_types', JSON.stringify(list)); loadRoomTypes(); loadRooms(); refreshDropdowns(); calculateDashboardMetrics(); } }
+        function clearRTForm() { $('#txtRTName').val(''); $('#txtRTPrice').val(''); $('#txtRTMaxGuest').val(''); $('#txtRTFeatures').val(''); editingRTId = null; $('#rtFormTitle').text("Add New Room Type Category"); $('#btnSaveRT').text("Save Room Type"); }
+
+        /* 2. ROOMS CODE */
+        function saveRoomData() {
+            let roomNo = $('#txtRoomNo').val().trim();
+            let type = $('#ddlRoomType').val();
+            let status = $('#ddlRoomStatus').val();
+            if (!type) return alert("Select Category!");
+
+            let list = JSON.parse(localStorage.getItem('h_rooms')) || [];
+            if (editingRoomId == null) {
+                list.push({ id: crypto.randomUUID(), roomNo, type, status });
+            } else {
+                let i = list.findIndex(x => x.id === editingRoomId);
+                if (i !== -1) { list[i].roomNo = roomNo; list[i].type = type; list[i].status = status; }
+            }
+            localStorage.setItem('h_rooms', JSON.stringify(list));
+            clearRoomForm(); loadRooms(); refreshDropdowns(); calculateDashboardMetrics();
+        }
+
+        function loadRooms() {
+            let list = JSON.parse(localStorage.getItem('h_rooms')) || [];
+            let rTypes = JSON.parse(localStorage.getItem('h_room_types')) || [];
+            let keyword = $('#searchRoom').val().toLowerCase();
+
+            if (keyword) { list = list.filter(r => r.roomNo.toLowerCase().includes(keyword) || r.type.toLowerCase().includes(keyword)); }
+
+            $('#tblRooms').html('');
+            list.forEach((item, index) => {
+                let badge = item.status === 'Available' ? 'bg-success-subtle text-success border border-success-subtle' : 'bg-warning-subtle text-warning border border-warning-subtle';
+                let matchCat = rTypes.find(t => t.name === item.type);
+                let currentPrice = matchCat ? Number(matchCat.price).toLocaleString() + " ကျပ်" : "Not Set";
+
+                $('#tblRooms').append(`<tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="btn btn-action btn-outline-primary" onclick="editRoom('${item.id}')" title="Edit"><i class="bi bi-pencil-square"></i></button>
+                            <button class="btn btn-action btn-outline-danger" onclick="deleteRoom('${item.id}')" title="Delete"><i class="bi bi-trash-fill"></i></button>
+                        </div>
+                    </td>
+                    <td>${index + 1}</td><td><b>${item.roomNo}</b></td><td>${item.type}</td><td><b class="text-secondary">${currentPrice}</b></td><td><span class="badge ${badge}">${item.status}</span></td>
+                </tr>`);
+            });
+        }
+        function editRoom(id) {
+            let list = JSON.parse(localStorage.getItem('h_rooms')) || [];
+            let item = list.find(x => x.id === id);
+            if (item) {
+                $('#txtRoomNo').val(item.roomNo); $('#ddlRoomType').val(item.type); $('#ddlRoomStatus').val(item.status);
+                editingRoomId = id; $('#rmFormTitle').text("Update Room Status"); $('#btnSaveRoom').text("Update Room");
+            }
+        }
+        function deleteRoom(id) { if (confirm("Delete Room?")) { let list = JSON.parse(localStorage.getItem('h_rooms')) || []; list = list.filter(x => x.id !== id); localStorage.setItem('h_rooms', JSON.stringify(list)); loadRooms(); refreshDropdowns(); calculateDashboardMetrics(); } }
+        function clearRoomForm() { $('#txtRoomNo').val(''); editingRoomId = null; $('#rmFormTitle').text("Add Specific Room Number"); $('#btnSaveRoom').text("Add Room"); }
+
+        /* 3. GUESTS CODE */
+        function saveGuestData() {
+            let name = $('#txtGstName').val().trim();
+            let nrc = $('#txtGstNrc').val().trim();
+            let contact = $('#txtGstContact').val().trim();
+
+            let list = JSON.parse(localStorage.getItem('h_guests')) || [];
+            if (editingGuestId == null) {
+                list.push({ id: crypto.randomUUID(), name, nrc, contact, isDeleted: false });
+            } else {
+                let i = list.findIndex(x => x.id === editingGuestId);
+                if (i !== -1) { list[i].name = name; list[i].nrc = nrc; list[i].contact = contact; }
+            }
+            localStorage.setItem('h_guests', JSON.stringify(list));
+            clearGuestForm(); loadGuests(); refreshDropdowns();
+        }
+
+        function loadGuests() {
+            let list = JSON.parse(localStorage.getItem('h_guests')) || [];
+            let keyword = $('#searchGuest').val().toLowerCase();
+            let activeGuests = list.filter(g => !g.isDeleted);
+
+            if (keyword) { activeGuests = activeGuests.filter(g => g.name.toLowerCase().includes(keyword) || g.nrc.toLowerCase().includes(keyword)); }
+
+            $('#tblGuests').html('');
+            activeGuests.forEach((item, index) => {
+                $('#tblGuests').append(`<tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="btn btn-action btn-outline-primary" onclick="editGuest('${item.id}')" title="Fix Typo"><i class="bi bi-pencil-square"></i></button>
+                            <button class="btn btn-action btn-outline-danger" onclick="softDeleteGuest('${item.id}', '${item.name}')" title="Delete Profile"><i class="bi bi-person-x-fill"></i></button>
+                        </div>
+                    </td>
+                    <td>${index + 1}</td><td><b>${item.name}</b></td><td>${item.nrc}</td><td>${item.contact}</td>
+                </tr>`);
+            });
+        }
+
+        function softDeleteGuest(id, guestName) {
+            let bookings = JSON.parse(localStorage.getItem('h_bookings')) || [];
+            let hasActiveBooking = bookings.some(b => b.guest === guestName && (b.status === 'Pending Payment' || b.status === 'Confirmed'));
+            if (hasActiveBooking) return alert("Guest has an active room reservation!");
+
+            if (confirm("Soft-delete profile?")) {
+                let list = JSON.parse(localStorage.getItem('h_guests')) || [];
+                let i = list.findIndex(x => x.id === id);
+                if (i !== -1) { list[i].isDeleted = true; }
+                localStorage.setItem('h_guests', JSON.stringify(list));
+                loadGuests(); refreshDropdowns();
+            }
+        }
+        function editGuest(id) {
+            let list = JSON.parse(localStorage.getItem('h_guests')) || [];
+            let item = list.find(x => x.id === id);
+            if (item) {
+                $('#txtGstName').val(item.name); $('#txtGstNrc').val(item.nrc); $('#txtGstContact').val(item.contact);
+                editingGuestId = id; $('#gstFormTitle').text("Modify Guest Registration"); $('#btnSaveGuest').text("Update Profile");
+            }
+        }
+        function clearGuestForm() { $('#txtGstName').val(''); $('#txtGstNrc').val(''); $('#txtGstContact').val(''); editingGuestId = null; $('#gstFormTitle').text("Register Guest Profile"); $('#btnSaveGuest').text("Register Profile"); }
+
+        /* 4. BOOKINGS CODE */
+        function saveBookingData() {
+            let guest = $('#ddlBkGuest').val();
+            let room = $('#ddlBkRoom').val();
+            let checkIn = $('#txtBkCheckIn').val();
+            let checkOut = $('#txtBkCheckOut').val();
+            let totalPrice = $('#txtBkTotalPrice').val();
+
+            if (!guest || !room) return alert("Select profile and room!");
+            if (Number(totalPrice) <= 0) return alert("Check-out date error!");
+
+            let list = JSON.parse(localStorage.getItem('h_bookings')) || [];
+            let bId = 'BK-' + Math.floor(1000 + Math.random() * 9000);
+            let createdTime = getFormattedDateTime();
+
+            list.push({ id: bId, guest, room, checkIn, checkOut, totalPrice, status: 'Pending Payment', trxRef: '', createdTime });
+            localStorage.setItem('h_bookings', JSON.stringify(list));
+
+            let rooms = JSON.parse(localStorage.getItem('h_rooms')) || [];
+            let rIdx = rooms.findIndex(r => r.roomNo === room);
+            if (rIdx !== -1) rooms[rIdx].status = 'Reserved (Booked)';
+            localStorage.setItem('h_rooms', JSON.stringify(rooms));
+
+            $('#txtBkCheckIn').val(''); $('#txtBkCheckOut').val(''); $('#txtBkTotalPrice').val(0);
+            loadBookings(); loadRooms(); refreshDropdowns(); calculateDashboardMetrics();
+        }
+
+        function loadBookings() {
+            let list = JSON.parse(localStorage.getItem('h_bookings')) || [];
+            let keyword = $('#searchBooking').val().toLowerCase();
+            if (keyword) { list = list.filter(b => b.id.toLowerCase().includes(keyword) || b.guest.toLowerCase().includes(keyword) || b.room.toLowerCase().includes(keyword)); }
+
+            $('#tblBookings').html(''); $('#tblOperations').html('');
+
+            list.forEach((item) => {
+                let badgeStyleClass = 'badge-pending';
+                if (item.status === 'Confirmed') badgeStyleClass = 'badge-confirmed';
+                if (item.status === 'Cancelled') badgeStyleClass = 'badge-cancelled';
+                if (item.status === 'Checked-Out') badgeStyleClass = 'badge-checkout';
+
+                let isConfirmedOrOver = (item.status === 'Confirmed' || item.status === 'Checked-Out' || item.status === 'Cancelled');
+                let actionButtonHtml = isConfirmedOrOver ? '-' : `<button class="btn btn-action btn-outline-danger" onclick="cancelBooking('${item.id}','${item.room}')" title="Cancel Booking"><i class="bi bi-x-circle-fill"></i></button>`;
+
+                $('#tblBookings').append(`<tr>
+                    <td>${actionButtonHtml}</td><td><b>${item.id}</b></td><td>${item.guest}</td><td><span class="badge bg-light text-dark border">${item.room}</span></td>
+                    <td>${item.checkIn}</td><td>${item.checkOut}</td><td><span class="text-dark fw-bold">${Number(item.totalPrice).toLocaleString()} K</span></td>
+                    <td><span class="badge ${badgeStyleClass}">${item.status}</span></td><td><small class="text-muted font-monospace">${item.createdTime || '-'}</small></td>
+                </tr>`);
+
+                let opsActionHtml = '-';
+                if (item.status === 'Pending Payment' || item.status === 'Confirmed') {
+                    opsActionHtml = `<button class="btn btn-sm btn-info text-white px-3" onclick="checkoutBooking('${item.id}','${item.room}')"><i class="bi bi-box-arrow-right me-1"></i>Checkout</button>`;
+                }
+
+                $('#tblOperations').append(`<tr>
+                    <td><b>${item.id}</b><br><small class="text-muted">${item.guest}</small></td>
+                    <td><span class="badge bg-light text-dark border fw-bold">${item.room}</span></td>
+                    <td><span class="badge bg-light text-primary border">${item.trxRef ? 'Paid: ' + item.trxRef : item.status}</span></td>
+                    <td>${opsActionHtml}</td>
+                </tr>`);
+            });
+        }
+
+        function cancelBooking(id, roomNo) {
+            if (confirm("Cancel reservation?")) {
+                let list = JSON.parse(localStorage.getItem('h_bookings')) || [];
+                let i = list.findIndex(x => x.id === id);
+                if (list[i].status === 'Confirmed') return alert("Already Confirmed!");
+                if (i !== -1) list[i].status = 'Cancelled';
+                localStorage.setItem('h_bookings', JSON.stringify(list));
+                releaseRoom(roomNo); loadBookings(); refreshDropdowns(); calculateDashboardMetrics();
+            }
+        }
+
+        /* 5. PAYMENTS CODE */
+        function savePaymentData() {
+            let bookingId = $('#ddlPayBooking').val();
+            let totalAmount = $('#txtPayAmount').val();
+            let paymentMethod = $('#ddlPayMethod').val();
+            let transactionSs = $('#txtPaySs').val().trim();
+
+            if (!bookingId) return alert("Select Booking!");
+
+            let pList = JSON.parse(localStorage.getItem('h_payments_ledger')) || [];
+            let transactionId = 'TXN-' + Math.floor(100000 + Math.random() * 900000);
+            let createdTime = getFormattedDateTime();
+
+            pList.push({ transactionId, bookingId, totalAmount, paymentMethod, transactionSs, createdTime });
+            localStorage.setItem('h_payments_ledger', JSON.stringify(pList));
+
+            let bookings = JSON.parse(localStorage.getItem('h_bookings')) || [];
+            let bIdx = bookings.findIndex(b => b.id === bookingId);
+            if (bIdx !== -1) { bookings[bIdx].trxRef = transactionId; }
+            localStorage.setItem('h_bookings', JSON.stringify(bookings));
+
+            $('#txtPaySs').val('');
+            loadPaymentsTable(); loadBookings(); refreshDropdowns(); calculateDashboardMetrics();
+        }
+
+        function loadPaymentsTable() {
+            let pList = JSON.parse(localStorage.getItem('h_payments_ledger')) || [];
+            $('#tblPaymentsLog').html('');
+
+            if (pList.length === 0) {
+                $('#tblPaymentsLog').append(`<tr><td colspan="6" class="text-center text-muted py-4">No transactions.</td></tr>`);
+                return;
+            }
+
+            pList.forEach(p => {
+                $('#tblPaymentsLog').append(`<tr>
+                    <td><b class="text-primary font-monospace small">${p.transactionId}</b></td>
+                    <td><span class="badge bg-light text-dark border p-1 font-monospace" style="font-size:11px;">${p.bookingId}</span></td>
+                    <td><b class="text-success">${Number(p.totalAmount).toLocaleString()} K</b></td>
+                    <td><small class="badge bg-secondary-subtle text-dark py-1 px-2" style="font-size:11px;">${p.paymentMethod}</small></td>
+                    <td><span class="text-truncate d-inline-block text-muted" style="max-width: 90px; cursor: help;" title="${p.transactionSs}"><i class="bi bi-receipt me-1"></i>${p.transactionSs}</span></td>
+                    <td><small class="text-muted font-monospace" style="font-size:11px;">${p.createdTime ? p.createdTime.substring(5, 16) : '-'}</small></td>
+                </tr>`);
+            });
+        }
+
+        function checkoutBooking(id, roomNo) {
+            let list = JSON.parse(localStorage.getItem('h_bookings')) || [];
+            let i = list.findIndex(x => x.id === id);
+            if (i !== -1) { list[i].status = 'Checked-Out'; }
+            localStorage.setItem('h_bookings', JSON.stringify(list));
+            releaseRoom(roomNo); loadBookings();
+        }
+
+        function releaseRoom(roomNo) {
+            let rooms = JSON.parse(localStorage.getItem('h_rooms')) || [];
+            let rIdx = rooms.findIndex(r => r.roomNo === roomNo);
+            if (rIdx !== -1) rooms[rIdx].status = 'Available';
+            localStorage.setItem('h_rooms', JSON.stringify(rooms));
+            loadRooms(); refreshDropdowns(); calculateDashboardMetrics();
+        }
+    </script>
+</body>
+
+</html>
