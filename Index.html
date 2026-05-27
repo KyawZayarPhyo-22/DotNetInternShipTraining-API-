@@ -723,7 +723,6 @@
         let editingGuestId = null;
 
         $(document).ready(function () {
-            // Navbar Panel Switching
             $('#dashboardNavbar .nav-link').click(function (e) {
                 e.preventDefault();
                 $('#dashboardNavbar .nav-link').removeClass('active');
@@ -736,19 +735,16 @@
                 refreshDropdowns();
             });
 
-            // Auto bill listeners
             $('#txtBkCheckIn, #txtBkCheckOut, #ddlBkRoom').change(function () { calculateBookingPrice(); });
             $('#ddlPayBooking').change(function () {
                 let amount = $(this).find(':selected').data('amount') || 0;
                 $('#txtPayAmount').val(amount);
             });
 
-            // Core Search filters
             $('#searchRoom').keyup(function () { loadRooms(); });
             $('#searchGuest').keyup(function () { loadGuests(); });
             $('#searchBooking').keyup(function () { loadBookings(); });
 
-            // Form Submit Trigger Handlers
             $('#formRoomType').submit(function () { saveRTData(); });
             $('#formRooms').submit(function () { saveRoomData(); });
             $('#formGuests').submit(function () { saveGuestData(); });
@@ -791,7 +787,6 @@
             $('#dashCheckoutCount').text(checkoutCount);
             $('#dashCancelledCount').text(cancelledCount);
 
-            // Matrix Table Rendering
             $('#tblDashboardMatrix').html('');
             if (rTypes.length === 0) {
                 $('#tblDashboardMatrix').append(`<tr><td colspan="5" class="text-center py-3 text-muted">No room types configured.</td></tr>`);
@@ -809,7 +804,6 @@
                 });
             }
 
-            // Load Recent Bookings 
             $('#tblDashboardRecentBookings').html('');
             if (bookings.length === 0) {
                 $('#tblDashboardRecentBookings').append(`<tr><td colspan="7" class="text-center text-muted py-4">No recent records found inside bookings archive list data ledger.</td></tr>`);
@@ -887,7 +881,6 @@
             }
         }
 
-        /* 1. ROOM TYPES CODE */
         function saveRTData() {
             let name = $('#txtRTName').val().trim();
             let price = $('#txtRTPrice').val().trim();
@@ -932,7 +925,6 @@
         function deleteRT(id) { if (confirm("Delete Category?")) { let list = JSON.parse(localStorage.getItem('h_room_types')) || []; list = list.filter(x => x.id !== id); localStorage.setItem('h_room_types', JSON.stringify(list)); loadRoomTypes(); loadRooms(); refreshDropdowns(); calculateDashboardMetrics(); } }
         function clearRTForm() { $('#txtRTName').val(''); $('#txtRTPrice').val(''); $('#txtRTMaxGuest').val(''); $('#txtRTFeatures').val(''); editingRTId = null; $('#rtFormTitle').text("Add New Room Type Category"); $('#btnSaveRT').text("Save Room Type"); }
 
-        /* 2. ROOMS CODE */
         function saveRoomData() {
             let roomNo = $('#txtRoomNo').val().trim();
             let type = $('#ddlRoomType').val();
@@ -985,7 +977,6 @@
         function deleteRoom(id) { if (confirm("Delete Room?")) { let list = JSON.parse(localStorage.getItem('h_rooms')) || []; list = list.filter(x => x.id !== id); localStorage.setItem('h_rooms', JSON.stringify(list)); loadRooms(); refreshDropdowns(); calculateDashboardMetrics(); } }
         function clearRoomForm() { $('#txtRoomNo').val(''); editingRoomId = null; $('#rmFormTitle').text("Add Specific Room Number"); $('#btnSaveRoom').text("Add Room"); }
 
-        /* 3. GUESTS CODE */
         function saveGuestData() {
             let name = $('#txtGstName').val().trim();
             let nrc = $('#txtGstNrc').val().trim();
@@ -1046,7 +1037,6 @@
         }
         function clearGuestForm() { $('#txtGstName').val(''); $('#txtGstNrc').val(''); $('#txtGstContact').val(''); editingGuestId = null; $('#gstFormTitle').text("Register Guest Profile"); $('#btnSaveGuest').text("Register Profile"); }
 
-        /* 4. BOOKINGS CODE */
         function saveBookingData() {
             let guest = $('#ddlBkGuest').val();
             let room = $('#ddlBkRoom').val();
@@ -1120,7 +1110,6 @@
             }
         }
 
-        /* 5. PAYMENTS CODE */
         function savePaymentData() {
             let bookingId = $('#ddlPayBooking').val();
             let totalAmount = $('#txtPayAmount').val();
